@@ -2,17 +2,26 @@ import express from "express";
 import {
     getAdminProfile,
     updateAdminProfile,
-    getAllDoctors,
     getAllPatients,
     getAllAppointments,
     // getAppointmentById,
     // updateAppointmentStatus,
     deleteAppointment,
+
+    // getDashboardStats,
+} from "../controllers/adminController.js";
+
+import {
     addDoctor,
     updateDoctor,
     deleteDoctor,
-    // getDashboardStats,
-} from "../controllers/adminController.js";
+    getAllDoctors,
+} from '../controllers/adminController/doctor.js'
+
+import {
+    addRoom,
+    getRooms,
+} from '../controllers/adminController/room.js'
 import { verifyAdmin } from "../middleware/verifyAdmin.js";
 
 const router = express.Router();
@@ -23,10 +32,13 @@ router.put("/update-profile", verifyAdmin, updateAdminProfile);
 
 // Doctor management
 router.post("/add-doctor", verifyAdmin, addDoctor); // Complete
-
-router.get("/doctors", verifyAdmin, getAllDoctors); // Complete
+router.get("/doctors", getAllDoctors); // Complete
 router.put("/update-doctor/:id", verifyAdmin, updateDoctor); // Complete
-router.delete("/delete-doctor/:id", verifyAdmin, deleteDoctor); // pending
+router.delete("/delete-doctor/:id", verifyAdmin, deleteDoctor); // Complete
+
+// room managment
+router.post("/rooms/add-room", verifyAdmin, addRoom); // pending
+router.get("/rooms/get", verifyAdmin, getRooms); // pending
 
 // Patient management
 router.get("/patients", verifyAdmin, getAllPatients); //
