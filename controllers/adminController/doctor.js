@@ -139,7 +139,6 @@ export const updateDoctor = async (req, res) => {
             doctor.password = await bcrypt.hash(password, salt);
         }
 
-        // Update other fields dynamically
         doctor.name = name || doctor.name;
         doctor.email = email || doctor.email;
         doctor.specialization = specialization || doctor.specialization;
