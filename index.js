@@ -17,7 +17,7 @@ app.use(
     cors({
         origin: [
             'http://localhost:5173',
-            'https://cms-server-one.vercel.app'
+            'https://cms-client-psi.vercel.app'
         ],
         credentials: true,
         methods: ['GET', "POST", "PUT", "DELETE"],
