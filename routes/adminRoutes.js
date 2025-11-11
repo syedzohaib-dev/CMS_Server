@@ -23,8 +23,12 @@ import {
     getRooms,
 } from '../controllers/adminController/room.js'
 import { verifyAdmin } from "../middleware/verifyAdmin.js";
+import { getAdminOverview } from "../controllers/adminController/adminOverview.js";
 
 const router = express.Router();
+
+// Admin Overview
+router.get("/overview", getAdminOverview);
 
 // Admin profile
 router.get("/profile", verifyAdmin, getAdminProfile);

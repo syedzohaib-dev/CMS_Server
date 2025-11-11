@@ -183,4 +183,40 @@ export const getUser = async (req, res) => {
     }
 };
 
+export const getAllUser = async (req, res) => {
+    try {
+        const authHeader = req.headers.authorization;
+
+        if (!authHeader)
+            return res.status(401).json({ message: "Access denied. No token provided." });
+
+        const token = authHeader.split(" ")[1];
+        if (!token)
+            return res.status(401).json({ message: "Access denied. Token missing." });
+
+        // ✅ Verify token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        // ✅ Pehle user collection check karo
+        let allUser = await User.find({ role: 'patient' }).select("-password");
+
+        if (!allUser) {
+            return res.status(404).json({ message: "User not found." });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "User fetched successfully",
+            allUser
+        });
+    } catch (error) {
+        console.error("Get User Error:", error);
+        if (error.name === "TokenExpiredError") {
+            return res.status(401).json({ message: "Token expired. Please log in again." });
+        }
+        res.status(401).json({ message: "Invalid token." });
+    }
+};
+
+
 export default { signup, login, getUser }
