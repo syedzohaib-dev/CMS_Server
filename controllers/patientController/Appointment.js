@@ -38,6 +38,9 @@ export const getAvailableSlots = async (req, res) => {
         const doctor = await addDoctor.findById(doctorId);
         if (!doctor) return res.status(404).json({ message: "Doctor not found" });
 
+        console.log(doctor);
+
+
         const selectedDay = new Date(date).toLocaleString("en-US", { weekday: "long" });
         if (!doctor.availableDays.includes(selectedDay)) {
             return res.status(400).json({
@@ -45,22 +48,26 @@ export const getAvailableSlots = async (req, res) => {
             });
         }
 
-        // ✅ Fix time format before generating slots
+        // ✅ Format time correctly before slot generation
         const formatTime = (t) =>
             t.includes(":") ? t : t.replace("AM", ":00 AM").replace("PM", ":00 PM");
 
         const allSlots = generateTimeSlots(
             formatTime(doctor.startTime),
             formatTime(doctor.endTime)
-        );
-        console.log("Doctor start:", doctor.startTime, "end:", doctor.endTime);
-        console.log("Parsed start:", dayjs(doctor.startTime, "h:mm A").format(), "Parsed end:", dayjs(doctor.endTime, "h:mm A").format());
+        ).map(s => s.trim().toLowerCase());  // normalize here
+
+        const formattedDate = new Date(date).toISOString().split("T")[0];
+
+        const bookedAppointments = await Appointment.find({ doctorId, date: formattedDate });
+        const bookedSlots = bookedAppointments.map(a => a.time.trim().toLowerCase());
+
+        const availableSlots = allSlots.filter(s => !bookedSlots.includes(s));
 
 
-        const bookedAppointments = await Appointment.find({ doctorId, date });
-        const bookedSlots = bookedAppointments.map((a) => a.time);
+        console.log("Booked slots in DB:", bookedSlots);
+        console.log("All generated slots:", allSlots.map(s => s.trim().toLowerCase()));
 
-        const availableSlots = allSlots.filter((slot) => !bookedSlots.includes(slot));
 
         console.log("All slots:", allSlots);
         console.log("Booked slots:", bookedSlots);
@@ -69,7 +76,7 @@ export const getAvailableSlots = async (req, res) => {
         res.status(200).json({
             success: true,
             doctor: doctor.name,
-            date,
+            date: formattedDate,
             slots: availableSlots,
         });
     } catch (error) {
@@ -77,6 +84,7 @@ export const getAvailableSlots = async (req, res) => {
         res.status(500).json({ message: "Server error fetching available slots" });
     }
 };
+
 
 
 
@@ -98,35 +106,27 @@ export const bookAppointment = async (req, res) => {
         const doctor = await addDoctor.findById(doctorId);
         if (!doctor) return res.status(404).json({ message: "Doctor not found" });
 
-        // ✅ yahan likhni hai ye line 👇
-        const formattedDate = new Date(date).toISOString().split("T")[0]; // e.g. "2025-11-09"
+        const formattedDate = new Date(date).toISOString().split("T")[0];
+        const normalizedTime = time.trim().toLowerCase();
 
-        // Verify day
-        const selectedDay = new Date(date).toLocaleString("en-US", { weekday: "long" });
-        if (!doctor.availableDays.includes(selectedDay)) {
-            return res.status(400).json({
-                message: `Doctor not available on ${selectedDay}`,
-            });
-        }
+        const existingAppointment = await Appointment.findOne({
+            doctorId,
+            date: formattedDate,
+            time: normalizedTime,
+        });
 
-        // Verify time slot availability
-        const existingAppointment = await Appointment.findOne({ doctorId, date: formattedDate, time });
         if (existingAppointment) {
-            return res.status(400).json({
-                message: "This time slot is already booked.",
-            });
+            return res.status(400).json({ message: "This time slot is already booked." });
         }
 
-        // Book new appointment
         const appointment = await Appointment.create({
             patientId,
             doctorId,
             doctorName: doctor.name,
             date: formattedDate,
-            time,
+            time: normalizedTime,
             status: "Pending",
         });
-
         res.status(201).json({
             success: true,
             message: "Appointment booked successfully!",

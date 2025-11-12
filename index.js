@@ -37,9 +37,7 @@ app.use('/api/v1/doctor', doctorRoutes);
 // connect mongoose
 const start = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URI, {
-            // mongoose options if needed
-        });
+        await mongoose.connect(process.env.MONGO_URI);
         console.log("MongoDB connected");
         const port = process.env.PORT || 5000;
         app.listen(port, () => console.log(`Server running on port ${port}`));
