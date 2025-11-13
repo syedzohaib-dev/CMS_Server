@@ -4,7 +4,6 @@ import Appointment from "../../model/patient/Appointment.js";
 
 export const saveCheckup = async (req, res) => {
     try {
-        // ✅ Verify token   
         const authHeader = req.headers.authorization;  
         if (!authHeader) {
             return res.status(401).json({ success: false, message: "No token provided" });

@@ -1,9 +1,6 @@
 import bcrypt from "bcryptjs";
 import Doctor from "../../model/admin/addDoctor.js";
 
-
-
-// Doctor Management
 export const addDoctor = async (req, res) => {
     try {
         const {
@@ -21,7 +18,6 @@ export const addDoctor = async (req, res) => {
             profileImgURL
         } = req.body;
 
-        // Validate required fields
         if (
             !name ||
             !email ||
@@ -39,17 +35,14 @@ export const addDoctor = async (req, res) => {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        // Check existing doctor
         const existingDoctor = await Doctor.findOne({ email });
         if (existingDoctor) {
             return res.status(400).json({ message: "Email already registered" });
         }
 
-        // Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Create new doctor
         const doctor = await Doctor.create({
             name,
             email,
@@ -82,7 +75,7 @@ export const addDoctor = async (req, res) => {
 
 export const getAllDoctors = async (req, res) => {
     try {
-        const doctors = await Doctor.find().select("-password"); // exclude password for security
+        const doctors = await Doctor.find().select("-password");
 
         if (!doctors || doctors.length === 0) {
             return res.status(404).json({
@@ -133,7 +126,6 @@ export const updateDoctor = async (req, res) => {
             });
         }
 
-        // Update password only if provided
         if (password) {
             const salt = await bcrypt.genSalt(10);
             doctor.password = await bcrypt.hash(password, salt);
@@ -151,7 +143,6 @@ export const updateDoctor = async (req, res) => {
         doctor.endTime = endTime || doctor.endTime;
         doctor.profileImgURL = profileImgURL || doctor.profileImgURL
 
-        // Save updated data
         await doctor.save();
 
         res.status(200).json({
@@ -172,7 +163,6 @@ export const deleteDoctor = async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Check if doctor exists
         const doctor = await Doctor.findById(id);
         if (!doctor) {
             return res.status(404).json({
@@ -181,7 +171,6 @@ export const deleteDoctor = async (req, res) => {
             });
         }
 
-        // Delete doctor
         await Doctor.findByIdAndDelete(id);
 
         res.status(200).json({

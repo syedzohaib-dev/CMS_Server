@@ -12,7 +12,6 @@ import doctorRoutes from './routes/doctorRoutes.js'
 const app = express();
 
 dotenv.config();
-// middlewares
 app.use(
     cors({
         origin: [
@@ -30,11 +29,10 @@ app.use(cookieParser());
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/admin', adminRoutes);
-app.use('/api/v1/patient', patientRoutes);
+app.use('/api/v1/patient', patientRoutes); 
 app.use('/api/v1/doctor', doctorRoutes);
 
 
-// connect mongoose
 const start = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URI);
@@ -47,7 +45,6 @@ const start = async () => {
 };
 start();
 
-// example route
 app.get("/", (req, res) => {
     res.json({ ok: true, msg: "Clinic backend running" });
 });

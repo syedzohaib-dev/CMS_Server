@@ -12,7 +12,6 @@ export const addRoom = async (req, res) => {
             availableTo,
         } = req.body;
 
-        // Check if room number already exists
         const existingRoom = await room.findOne({ roomNumber });
         if (existingRoom) {
             return res.status(400).json({
@@ -21,7 +20,6 @@ export const addRoom = async (req, res) => {
             });
         }
 
-        // Create new room
         const newRoom = new room({
             roomNumber,
             roomType,
@@ -48,7 +46,6 @@ export const addRoom = async (req, res) => {
     }
 };
 
-// Get all rooms
 export const getRooms = async (req, res) => {
     try {
         const rooms = await room.find();

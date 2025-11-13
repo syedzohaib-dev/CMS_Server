@@ -48,7 +48,6 @@ export const getAvailableSlots = async (req, res) => {
             });
         }
 
-        // ✅ Format time correctly before slot generation
         const formatTime = (t) =>
             t.includes(":") ? t : t.replace("AM", ":00 AM").replace("PM", ":00 PM");
 

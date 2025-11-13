@@ -1,12 +1,9 @@
 import addDoctor from "../../model/admin/addDoctor.js";
 
-// ✅ Get doctors available today
 export const getTodayAvailableDoctors = async (req, res) => {
     try {
-        // Get current weekday (e.g. "Monday")
         const today = new Date().toLocaleString("en-US", { weekday: "long" });
 
-        // Find doctors whose availableDays include today
         const availableDoctors = await addDoctor.find({
             availableDays: { $in: [today] },
         });

@@ -4,11 +4,7 @@ import {
     updateAdminProfile,
     getAllPatients,
     getAllAppointments,
-    // getAppointmentById,
-    // updateAppointmentStatus,
     deleteAppointment,
-
-    // getDashboardStats,
 } from "../controllers/adminController.js";
 
 import {
@@ -27,33 +23,22 @@ import { getAdminOverview } from "../controllers/adminController/adminOverview.j
 
 const router = express.Router();
 
-// Admin Overview
 router.get("/overview", getAdminOverview);
 
-// Admin profile
 router.get("/profile", verifyAdmin, getAdminProfile);
 router.put("/update-profile", verifyAdmin, updateAdminProfile);
 
-// Doctor management
-router.post("/add-doctor", verifyAdmin, addDoctor); // Complete
-router.get("/doctors", getAllDoctors); // Complete
-router.put("/update-doctor/:id", verifyAdmin, updateDoctor); // Complete
-router.delete("/delete-doctor/:id", verifyAdmin, deleteDoctor); // Complete
+router.post("/add-doctor", verifyAdmin, addDoctor);
+router.get("/doctors", getAllDoctors);
+router.put("/update-doctor/:id", verifyAdmin, updateDoctor);
+router.delete("/delete-doctor/:id", verifyAdmin, deleteDoctor);
 
-// room managment
-router.post("/rooms/add-room", verifyAdmin, addRoom); // pending
-router.get("/rooms/get", verifyAdmin, getRooms); // pending
+router.post("/rooms/add-room", verifyAdmin, addRoom);
+router.get("/rooms/get", verifyAdmin, getRooms);
 
-// Patient management
-router.get("/patients", verifyAdmin, getAllPatients); //
+router.get("/patients", verifyAdmin, getAllPatients);
 
-// Appointment management
 router.get("/appointments", verifyAdmin, getAllAppointments);
-// router.get("/appointment/:id", verifyAdmin, getAppointmentById);
-// router.put("/appointment/:id/status", verifyAdmin, updateAppointmentStatus);
 router.delete("/appointment/:id", verifyAdmin, deleteAppointment);
-
-// Dashboard stats
-// router.get("/dashboard", verifyAdmin, getDashboardStats);
 
 export default router;
