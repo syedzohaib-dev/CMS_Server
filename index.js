@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 import authRoutes from './routes/authRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
 import patientRoutes from './routes/patientRoutes.js'
-import doctorRoutes from './routes/doctorRoutes.js'
+import doctorRoutes from './routes/doctorRoutes.js' 
 
 const app = express();
 
