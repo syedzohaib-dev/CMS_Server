@@ -1,7 +1,7 @@
 import addDoctor from "../../model/admin/addDoctor.js";
 import Appointment from "../../model/patient/Appointment.js";
 import User from "../../model/auth/user.js";
-import Room from "../../model/admin/Room.js"; 
+import Room from "../../model/admin/room.js";
 import dayjs from "dayjs";
 
 export const getAdminOverview = async (req, res) => {

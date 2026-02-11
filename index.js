@@ -2,12 +2,12 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-
 import mongoose from "mongoose";
-import authRoutes from './routes/authRoutes.js'
-import adminRoutes from './routes/adminRoutes.js'
-import patientRoutes from './routes/patientRoutes.js'
-import doctorRoutes from './routes/doctorRoutes.js' 
+import authRoutes from './src/routes/authRoutes.js'
+import userRoutes from './src/routes/usersRoutes.js'
+// import adminRoutes from './src/routes/adminRoutes.js'
+// import patientRoutes from './src/routes/patientRoutes.js'
+// import doctorRoutes from './src/routes/doctorRoutes.js'
 
 const app = express();
 
@@ -28,9 +28,10 @@ app.use(cookieParser());
 
 
 app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/admin', adminRoutes);
-app.use('/api/v1/patient', patientRoutes); 
-app.use('/api/v1/doctor', doctorRoutes);
+app.use('/api/v1/users', userRoutes);
+// app.use('/api/v1/admin', adminRoutes);
+// app.use('/api/v1/patient', patientRoutes); 
+// app.use('/api/v1/doctor', doctorRoutes);
 
 
 const start = async () => {
@@ -46,5 +47,5 @@ const start = async () => {
 start();
 
 app.get("/", (req, res) => {
-    res.json({ ok: true, msg: "Clinic backend running" });
+    res.json({ success: true, msg: "Clinic Backend Running..." });
 });

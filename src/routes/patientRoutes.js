@@ -1,7 +1,7 @@
 import express from "express";
-import { bookAppointment, getAvailableSlots, getMyAppointments } from "../controllers/patientController/Appointment.js";
-import { getPatientStats } from "../controllers/patientController/overview.js";
-import { getPatientData } from "../controllers/patientController/getPatientData.js";
+import { bookAppointment, getAvailableSlots, getMyAppointments } from "../../controllers/patientController/Appointment.js";
+import { getPatientStats } from "../../controllers/patientController/overview.js";
+import { getPatientData } from "../../controllers/patientController/getPatientData.js";
 
 const router = express.Router();
 
