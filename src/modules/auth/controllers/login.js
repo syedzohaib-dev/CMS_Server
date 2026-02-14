@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from '../../model/auth/user.js'
+import User from '../../../model/user.js'
 import bcrypt from 'bcryptjs'
 
 export const login = async (req, res) => {
@@ -13,6 +13,12 @@ export const login = async (req, res) => {
         const user = await User.findOne({ email })
         if (!user) {
             return res.status(404).json({ message: "Invalid credentials" });
+        }
+        if (!user.isActive) {
+            return res.status(403).json({
+                success: false,
+                message: "Your account is inactive. Contact admin."
+            });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -32,6 +38,9 @@ export const login = async (req, res) => {
             token
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
 };

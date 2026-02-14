@@ -33,7 +33,10 @@ const userSchema = new mongoose.Schema(
             enum: ["Male", "Female"],
             required: true
         },
-
+        isActive: {
+            type: Boolean,
+            default: true
+        },
         age: {
             type: Number,
             required: true

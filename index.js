@@ -3,8 +3,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import authRoutes from './src/routes/authRoutes.js'
-import userRoutes from './src/routes/usersRoutes.js'
+import authRoutes from './src/modules/auth/auth.routes.js'
+import userRoutes from './src/modules/users/users.routes.js'
+import roomRoutes from './src/modules/rooms/rooms.routes.js'
 // import adminRoutes from './src/routes/adminRoutes.js'
 // import patientRoutes from './src/routes/patientRoutes.js'
 // import doctorRoutes from './src/routes/doctorRoutes.js'
@@ -29,6 +30,7 @@ app.use(cookieParser());
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/rooms', roomRoutes);
 // app.use('/api/v1/admin', adminRoutes);
 // app.use('/api/v1/patient', patientRoutes); 
 // app.use('/api/v1/doctor', doctorRoutes);

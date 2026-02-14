@@ -1,4 +1,4 @@
-import User from "../../model/auth/user.js";
+import User from "../../../model/user.js";
 import bcrypt from "bcryptjs";
 
 export const patientSignup = async (req, res) => {
@@ -82,6 +82,9 @@ export const adminCreateDoctor = async (req, res) => {
             data: doctor,
         });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
     }
 };

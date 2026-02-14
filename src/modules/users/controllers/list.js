@@ -1,4 +1,4 @@
-import User from "../../model/auth/user.js";
+import User from "../../../model/auth/user.js";
 
 export const getUsersByRole = async (req, res) => {
     try {
@@ -46,7 +46,6 @@ export const getSingleUser = async (req, res) => {
                 message: "ID is required",
             });
         }
-
         const users = await User.findById(id)
             .select("-password");
 
